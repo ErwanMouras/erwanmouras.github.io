@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deklio — Votre recherche d'emploi mérite un déclic</title>
+  <meta name="description" content="Deklio centralise vos candidatures, analyse les offres et génère vos documents. Le premier outil de recherche d'emploi pensé pour la France.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN SYSTEM
+    ═══════════════════════════════════════ */
+    :root {
+      --ink: #0c0c1d;
+      --ink-80: #2d2d42;
+      --ink-60: #4e4e67;
+      --ink-40: #8585a0;
+      --ink-20: #b8b8cc;
+      --paper: #f7f7f5;
+      --paper-warm: #edece6;
+      --surface: #ffffff;
+      --accent: #4f6ef7;
+      --accent-dark: #3a54d4;
+      --accent-end: #7c5cfc;
+      --success: #34d399;
+      --border: rgba(12,12,29,0.07);
+      --border-accent: rgba(79,110,247,0.18);
+      --glow: rgba(79,110,247,0.35);
+      --shadow-sm: 0 1px 3px rgba(12,12,29,0.04);
+      --shadow-md: 0 4px 24px rgba(12,12,29,0.07);
+      --shadow-lg: 0 16px 48px rgba(12,12,29,0.10);
+      --font-display: 'Cormorant Garamond', 'Georgia', serif;
+      --font-body: 'Manrope', 'Segoe UI', sans-serif;
+      --radius: 14px;
+      --radius-lg: 22px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.65;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* Subtle noise texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font-family: var(--font-body); cursor: pointer; border: none; }
+    input { font-family: var(--font-body); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ═══════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 20px var(--glow), 0 0 60px rgba(79,110,247,0.15); }
+      50% { text-shadow: 0 0 30px var(--glow), 0 0 80px rgba(124,92,252,0.2); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ═══════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: all 0.4s var(--ease-out);
+    }
+    nav.scrolled {
+      background: rgba(247,247,245,0.85);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+    }
+    .nav-logo span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink-60);
+      transition: color 0.25s;
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      padding: 10px 22px;
+      background: var(--ink);
+      color: var(--paper) !important;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.3s var(--ease-out);
+      letter-spacing: 0.01em;
+    }
+    .nav-cta:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(79,110,247,0.3);
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--paper);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--ink);
+    }
+    .mobile-menu-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      font-size: 2rem;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta-wrap { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(79,110,247,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(124,92,252,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 90%, rgba(52,211,153,0.03) 0%, transparent 50%),
+        var(--paper);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(79,110,247,0.08);
+      border: 1px solid var(--border-accent);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 24px;
+      animation: fadeIn 0.6s var(--ease-out) both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 20px;
+      animation: fadeInUp 0.7s var(--ease-out) 0.1s both;
+    }
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.12rem;
+      color: var(--ink-60);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 36px;
+      animation: fadeInUp 0.7s var(--ease-out) 0.2s both;
+    }
+    .hero-form {
+      display: flex;
+      gap: 10px;
+      animation: fadeInUp 0.7s var(--ease-out) 0.3s both;
+    }
+    .hero-form input[type="email"] {
+      flex: 1;
+      padding: 14px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: var(--surface);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      min-width: 0;
+    }
+    .hero-form input[type="email"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,110,247,0.1);
+    }
+    .hero-form input[type="email"]::placeholder { color: var(--ink-20); }
+    .btn-primary {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      color: #fff;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s var(--ease-out);
+      box-shadow: 0 2px 12px rgba(79,110,247,0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(79,110,247,0.35);
+    }
+    .hero-proof {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--ink-40);
+      animation: fadeInUp 0.7s var(--ease-out) 0.4s both;
+    }
+    .hero-proof strong { color: var(--ink-60); font-weight: 600; }
+
+    /* Dashboard Mockup */
+    .hero-visual {
+      animation: fadeInUp 0.8s var(--ease-out) 0.3s both;
+    }
+    .mockup-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg), 0 0 0 1px var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .mockup-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .mockup-dot:nth-child(1) { background: #ff5f57; }
+    .mockup-dot:nth-child(2) { background: #febc2e; }
+    .mockup-dot:nth-child(3) { background: #28c840; }
+    .mockup-body {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      min-height: 300px;
+    }
+    .mockup-sidebar {
+      background: #f0f0ed;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      border-right: 1px solid var(--border);
+    }
+    .mockup-nav-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--border);
+    }
+    .mockup-nav-dot.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+    }
+    .mockup-main { padding: 20px; }
+    .mockup-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .mockup-stat {
+      background: var(--paper);
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+    .mockup-stat-label {
+      width: 60%;
+      height: 6px;
+      background: var(--ink-20);
+      border-radius: 3px;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+    .mockup-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .mockup-stat-value.accent { color: var(--accent); }
+    .mockup-stat-value.success { color: var(--success); }
+    .mockup-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mockup-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--paper);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .mockup-row-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mockup-row-line {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--ink-20);
+      opacity: 0.4;
+    }
+    .mockup-row-pill {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding: 100px 0 60px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-form { flex-direction: column; }
+      .hero-visual { order: -1; }
+    }
+
+    /* ═══════════════════════════════════════
+       PROBLEM SECTION
+    ═══════════════════════════════════════ */
+    .problem {
+      padding: 100px 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 64px;
+    }
+    .problem-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .problem-header p {
+      color: var(--ink-60);
+      font-size: 1.05rem;
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .pain-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--paper);
+      transition: all 0.3s var(--ease-out);
+    }
+    .pain-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .pain-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(79,110,247,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    .pain-card h3 {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .pain-card p {
+      font-size: 0.85rem;
+      color: var(--ink-60);
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════
+       HOW IT WORKS — STICKY SCROLL
+    ═══════════════════════════════════════ */
+    .hiw {
+      padding: 100px 0;
+      background: var(--paper);
+    }
+    .hiw-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .hiw-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .hiw-header p {
+      color: var(--ink-60);
+      font-size: 1.05rem;
+    }
+    /* Steps + visual wrap */
+    .hiw-steps-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+    }
+    .hiw-steps-list {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .hiw-step-btn {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      padding: 28px 36px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.25s;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hiw-step-btn:last-child { border-bottom: none; }
+    .hiw-step-btn:hover:not(.active) { background: rgba(79,110,247,0.02); }
+    .hiw-step-btn.active { background: rgba(79,110,247,0.04); }
+    @keyframes hiwGaugeFill {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+    .step-indicator {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-end));
+    }
+    .hiw-step-btn.active .step-indicator.running {
+      animation: hiwGaugeFill 10s linear forwards;
+    }
+    .hiw-step-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-20);
+      transition: color 0.25s;
+    }
+    .hiw-step-btn.active .hiw-step-num { color: var(--accent); }
+    .hiw-step-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+    .hiw-step-desc {
+      font-size: 0.82rem;
+      color: var(--ink-40);
+      line-height: 1.55;
+      transition: color 0.25s;
+    }
+    .hiw-step-btn.active .hiw-step-desc { color: var(--ink-60); }
+
+    /* Visual panel (right column) */
+    .hiw-visual-panel {
+      position: relative;
+      padding: 32px;
+      background: var(--paper);
+      min-height: 460px;
+    }
+    .hiw-visual {
+      position: absolute;
+      inset: 32px;
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+      pointer-events: none;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md), 0 0 0 1px var(--border);
+      padding: 28px;
+      overflow-y: auto;
+    }
+    .hiw-visual.active {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    /* Mockup interiors */
+    .mock-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .mock-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+    .mock-badge {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+    .mock-upload-zone {
+      border: 2px dashed var(--border-accent);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 16px;
+      background: rgba(79,110,247,0.02);
+    }
+    .mock-upload-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .mock-upload-text {
+      font-size: 0.82rem;
+      color: var(--ink-40);
+    }
+    .mock-file-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .mock-file-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .mock-file-name {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .mock-file-date {
+      font-size: 0.72rem;
+      color: var(--ink-40);
+      margin-left: auto;
+    }
+
+    .mock-skill-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin: 3px;
+    }
+    .mock-skill-high { background: rgba(79,110,247,0.1); color: var(--accent); }
+    .mock-skill-med { background: rgba(52,211,153,0.1); color: #059669; }
+    .mock-skill-low { background: rgba(12,12,29,0.05); color: var(--ink-40); }
+
+    .mock-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .mock-info-label { color: var(--ink-40); }
+    .mock-info-value { font-weight: 600; }
+
+    .mock-verdict-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 16px 0;
+    }
+    .mock-verdict-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      transition: all 0.3s;
+      font-size: 0.82rem;
+    }
+    .mock-verdict-item.active {
+      border-color: var(--success);
+      background: rgba(52,211,153,0.06);
+    }
+    .mock-verdict-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--ink-20);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .mock-verdict-item.active .mock-verdict-dot {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    .mock-verdict-label { font-weight: 500; }
+    .mock-verdict-item.active .mock-verdict-label { color: #059669; font-weight: 600; }
+
+    .mock-doc-preview {
+      background: var(--paper);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-top: 12px;
+    }
+    .mock-doc-line {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--ink-20);
+      opacity: 0.3;
+      margin-bottom: 8px;
+    }
+    .mock-doc-line.heading {
+      height: 8px;
+      width: 60%;
+      opacity: 0.5;
+      margin-bottom: 14px;
+    }
+    .mock-doc-line.short { width: 45%; }
+    .mock-doc-line.medium { width: 75%; }
+    .mock-doc-line.long { width: 92%; }
+    .mock-doc-section-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 600;
+      margin: 14px 0 8px;
+    }
+
+    @media (max-width: 900px) {
+      .hiw-steps-wrap { grid-template-columns: 1fr; }
+      .hiw-steps-list {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .hiw-step-btn {
+        flex: 0 0 auto;
+        width: 50%;
+        padding: 18px 20px;
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+      }
+      .hiw-step-btn:last-child { border-right: none; }
+      .hiw-step-desc { display: none; }
+      .step-indicator { bottom: auto; top: 0; }
+      .hiw-visual-panel { padding: 24px; min-height: 380px; }
+      .hiw-visual { inset: 24px; }
+    }
+
+    /* ═══════════════════════════════════════
+       FEATURES
+    ═══════════════════════════════════════ */
+    .features {
+      padding: 100px 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .features-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 56px;
+    }
+    .features-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .features-header p { color: var(--ink-60); font-size: 1.05rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .feature-card {
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--paper);
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .feature-card.premium {
+      background: linear-gradient(135deg, rgba(79,110,247,0.03), rgba(124,92,252,0.03));
+      border-color: var(--border-accent);
+    }
+    .feature-card .premium-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 3px 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(79,110,247,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+    }
+    .feature-card.premium .feature-icon {
+      background: linear-gradient(135deg, rgba(79,110,247,0.12), rgba(124,92,252,0.12));
+    }
+    .feature-card h3 {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 0.82rem;
+      color: var(--ink-60);
+      line-height: 1.55;
+    }
+    .feature-card .feature-limit {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 2px 8px;
+      background: rgba(52,211,153,0.08);
+      color: #059669;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
+
+    /* ═══════════════════════════════════════
+       USE CASES
+    ═══════════════════════════════════════ */
+    .usecases {
+      padding: 100px 0;
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+    }
+    .usecases-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 56px;
+    }
+    .usecases-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .usecases-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .uc-tab {
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-60);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+    .uc-tab:hover { border-color: var(--border-accent); color: var(--ink); }
+    .uc-tab.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+    .uc-panels { position: relative; min-height: 280px; }
+    .uc-panel {
+      opacity: 0;
+      transform: translateY(16px);
+      position: absolute;
+      inset: 0;
+      transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+      pointer-events: none;
+    }
+    .uc-panel.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      pointer-events: auto;
+    }
+    .uc-panel-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .uc-text h3 {
+      font-size: 1.6rem;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+    .uc-text p {
+      font-size: 1rem;
+      color: var(--ink-60);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .uc-features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .uc-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--ink-80);
+    }
+    .uc-feature::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(52,211,153,0.12);
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%23059669' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .uc-visual {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+    }
+    .uc-scenario-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .uc-scenario-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .uc-scenario-item:last-child { border-bottom: none; }
+    .uc-scenario-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .uc-panel-inner { grid-template-columns: 1fr; gap: 32px; }
+      .uc-visual { order: -1; }
+    }
+
+    /* ═══════════════════════════════════════
+       DARK QUOTE
+    ═══════════════════════════════════════ */
+    .dark-quote {
+      padding: 140px 0;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    .dark-quote::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(79,110,247,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(124,92,252,0.08) 0%, transparent 60%);
+    }
+    .dark-quote-inner {
+      position: relative;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .dark-quote h2 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      color: #e8e8f0;
+      letter-spacing: -1.5px;
+      line-height: 1.2;
+    }
+    .declic-glow {
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glowPulse 3s ease-in-out infinite;
+      font-style: italic;
+    }
+    .dark-quote p {
+      margin-top: 20px;
+      color: var(--ink-40);
+      font-size: 1.05rem;
+    }
+
+    /* ═══════════════════════════════════════
+       FAQ
+    ═══════════════════════════════════════ */
+    .faq {
+      padding: 100px 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .faq-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 56px;
+    }
+    .faq-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+    }
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 24px 0;
+      background: none;
+      text-align: left;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-toggle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.35s var(--ease-out);
+      font-size: 1.1rem;
+      color: var(--ink-40);
+      line-height: 1;
+    }
+    .faq-item.open .faq-toggle {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(79,110,247,0.06);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s var(--ease-out), opacity 0.35s;
+      opacity: 0;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      opacity: 1;
+    }
+    .faq-answer p {
+      padding: 0 0 24px;
+      color: var(--ink-60);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════
+       EARLY ACCESS CTA
+    ═══════════════════════════════════════ */
+    .early-access {
+      padding: 100px 0;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    .early-access::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(79,110,247,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(124,92,252,0.08) 0%, transparent 60%);
+    }
+    .ea-inner {
+      position: relative;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .ea-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(79,110,247,0.1);
+      border: 1px solid rgba(79,110,247,0.2);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 28px;
+      letter-spacing: 0.03em;
+    }
+    .ea-inner h2 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      color: #e8e8f0;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .ea-inner > p {
+      color: var(--ink-40);
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .ea-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .ea-form input[type="email"] {
+      flex: 1;
+      padding: 15px 20px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .ea-form input[type="email"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,110,247,0.15);
+    }
+    .ea-form input[type="email"]::placeholder { color: var(--ink-40); }
+    .ea-form .btn-primary {
+      padding: 15px 32px;
+      font-size: 0.95rem;
+    }
+    .ea-trust {
+      font-size: 0.82rem;
+      color: var(--ink-40);
+    }
+    .ea-trust em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    @media (max-width: 560px) {
+      .ea-form { flex-direction: column; }
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      padding: 48px 0;
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #e8e8f0;
+    }
+    .footer-logo span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--ink-40);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: #e8e8f0; }
+    .footer-love {
+      font-size: 0.78rem;
+      color: var(--ink-40);
+      width: 100%;
+      text-align: center;
+      margin-top: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @media (max-width: 560px) {
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    /* ═══════════════════════════════════════
+       SUCCESS STATE
+    ═══════════════════════════════════════ */
+    .form-success {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--success);
+      animation: fadeInUp 0.4s var(--ease-out) both;
+    }
+    .form-success.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">De<span>k</span>lio</a>
+      <ul class="nav-links">
+        <li><a href="#how-it-works">Comment ça marche</a></li>
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#use-cases">Cas d'usage</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-cta-wrap">
+        <a href="#early-access" class="nav-cta">Accès anticipé</a>
+      </div>
+      <button class="nav-hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-menu').classList.add('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu">
+    <button class="mobile-menu-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
+    <a href="#how-it-works" onclick="this.parentElement.classList.remove('open')">Comment ça marche</a>
+    <a href="#features" onclick="this.parentElement.classList.remove('open')">Fonctionnalités</a>
+    <a href="#use-cases" onclick="this.parentElement.classList.remove('open')">Cas d'usage</a>
+    <a href="#faq" onclick="this.parentElement.classList.remove('open')">FAQ</a>
+    <a href="#early-access" onclick="this.parentElement.classList.remove('open')" class="nav-cta" style="margin-top:12px;">Accès anticipé</a>
+  </div>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">Pré-inscriptions ouvertes</div>
+          <h1>Votre recherche d'emploi mérite un <em>déclic.</em></h1>
+          <p class="hero-sub">Deklio centralise vos candidatures, analyse les offres et génère vos documents — enfin un outil pensé pour le marché français.</p>
+          <form class="hero-form" onsubmit="handleForm(event, this)">
+            <input type="email" placeholder="votre@email.com" required>
+            <button type="submit" class="btn-primary">Rejoindre la liste</button>
+          </form>
+          <div class="form-success">
+            <span>&#10003;</span> Vous êtes sur la liste. Le déclic approche.
+          </div>
+          <p class="hero-proof">Rejoignez les premiers à tester Deklio — <strong>places limitées</strong></p>
+        </div>
+        <div class="hero-visual">
+          <div class="mockup-card">
+            <div class="mockup-topbar">
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-sidebar">
+                <div class="mockup-nav-dot active"></div>
+                <div class="mockup-nav-dot"></div>
+                <div class="mockup-nav-dot"></div>
+                <div class="mockup-nav-dot"></div>
+              </div>
+              <div class="mockup-main">
+                <div class="mockup-stat-row">
+                  <div class="mockup-stat">
+                    <div class="mockup-stat-label"></div>
+                    <div class="mockup-stat-value">24</div>
+                  </div>
+                  <div class="mockup-stat">
+                    <div class="mockup-stat-label"></div>
+                    <div class="mockup-stat-value accent">8</div>
+                  </div>
+                  <div class="mockup-stat">
+                    <div class="mockup-stat-label"></div>
+                    <div class="mockup-stat-value success">3</div>
+                  </div>
+                </div>
+                <div class="mockup-rows">
+                  <div class="mockup-row">
+                    <div class="mockup-row-dot" style="background:#34d399"></div>
+                    <div class="mockup-row-line" style="width:55%"></div>
+                    <div class="mockup-row-pill" style="background:rgba(52,211,153,0.1);color:#059669">Entretien</div>
+                  </div>
+                  <div class="mockup-row">
+                    <div class="mockup-row-dot" style="background:#4f6ef7"></div>
+                    <div class="mockup-row-line" style="width:70%"></div>
+                    <div class="mockup-row-pill" style="background:rgba(79,110,247,0.1);color:var(--accent)">Postulé</div>
+                  </div>
+                  <div class="mockup-row">
+                    <div class="mockup-row-dot" style="background:#f59e0b"></div>
+                    <div class="mockup-row-line" style="width:48%"></div>
+                    <div class="mockup-row-pill" style="background:rgba(245,158,11,0.1);color:#d97706">En cours</div>
+                  </div>
+                  <div class="mockup-row">
+                    <div class="mockup-row-dot" style="background:#34d399"></div>
+                    <div class="mockup-row-line" style="width:62%"></div>
+                    <div class="mockup-row-pill" style="background:rgba(52,211,153,0.1);color:#059669">Offre</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PROBLEM ═══════════════════ -->
+  <section class="problem">
+    <div class="container">
+      <div class="problem-header reveal">
+        <h2>Chercher un emploi en France, c'est le chaos.</h2>
+        <p>Pas d'outil intégré. Pas de méthode. Juste du bricolage entre dix plateformes.</p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card reveal">
+          <div class="pain-icon">&#127760;</div>
+          <div>
+            <h3>5 à 10 plateformes</h3>
+            <p>France Travail, LinkedIn, Indeed, WTTJ, Apec… Vous jonglez entre tous ces sites sans vue d'ensemble.</p>
+          </div>
+        </div>
+        <div class="pain-card reveal reveal-delay-1">
+          <div class="pain-icon">&#128202;</div>
+          <div>
+            <h3>Google Sheets comme tracker</h3>
+            <p>Vous suivez vos candidatures sur un tableur bricolé, jamais à jour et impossible à partager.</p>
+          </div>
+        </div>
+        <div class="pain-card reveal reveal-delay-2">
+          <div class="pain-icon">&#129302;</div>
+          <div>
+            <h3>ChatGPT en mode artisanal</h3>
+            <p>Vous utilisez l'IA sans structure — un prompt ici, un copier-coller là, sans cohérence ni suivi.</p>
+          </div>
+        </div>
+        <div class="pain-card reveal reveal-delay-3">
+          <div class="pain-icon">&#128165;</div>
+          <div>
+            <h3>Candidatures oubliées</h3>
+            <p>Vous postulez, puis oubliez de relancer. Résultat : des opportunités qui s'évaporent en silence.</p>
+          </div>
+        </div>
+        <div class="pain-card reveal reveal-delay-4">
+          <div class="pain-icon">&#127467;&#127479;</div>
+          <div>
+            <h3>Rien d'adapté à la France</h3>
+            <p>Les outils US ignorent la lettre de motivation Vous/Moi/Nous, le CV français et l'écosystème local.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+  <section class="hiw" id="how-it-works">
+    <div class="container">
+      <div class="hiw-header reveal">
+        <span class="section-label">Comment ça marche</span>
+        <h2>Du chaos à la maîtrise, en 4 étapes.</h2>
+        <p>Deklio transforme votre recherche en une démarche structurée et efficace.</p>
+      </div>
+      <div class="hiw-steps-wrap reveal">
+      <!-- Left: clickable step list -->
+      <div class="hiw-steps-list">
+        <button class="hiw-step-btn active" data-step="1">
+          <span class="hiw-step-num">01</span>
+          <span class="hiw-step-title">Importez et centralisez</span>
+          <span class="hiw-step-desc">CV, candidatures, statuts — tout au même endroit.</span>
+          <span class="step-indicator"></span>
+        </button>
+        <button class="hiw-step-btn" data-step="2">
+          <span class="hiw-step-num">02</span>
+          <span class="hiw-step-title">Analysez chaque offre</span>
+          <span class="hiw-step-desc">L'IA extrait les infos clés et les points d'attention.</span>
+          <span class="step-indicator"></span>
+        </button>
+        <button class="hiw-step-btn" data-step="3">
+          <span class="hiw-step-num">03</span>
+          <span class="hiw-step-title">Obtenez votre verdict</span>
+          <span class="hiw-step-desc">Un verdict humain en 4 niveaux, pas un score froid.</span>
+          <span class="step-indicator"></span>
+        </button>
+        <button class="hiw-step-btn" data-step="4">
+          <span class="hiw-step-num">04</span>
+          <span class="hiw-step-title">Générez vos documents</span>
+          <span class="hiw-step-desc">CV ciblé et lettre à la française en quelques secondes.</span>
+          <span class="step-indicator"></span>
+        </button>
+      </div>
+      <!-- Right: visual panel -->
+      <div class="hiw-visual-panel">
+        <div class="hiw-visual active" data-step="1">
+              <div class="mock-header-row">
+                <span class="mock-title">Mes documents</span>
+                <span class="mock-badge" style="background:rgba(79,110,247,0.1);color:var(--accent);">3 CV</span>
+              </div>
+              <div class="mock-upload-zone">
+                <div class="mock-upload-icon">&#128196;</div>
+                <div class="mock-upload-text">Glissez vos CV ici ou cliquez pour importer</div>
+              </div>
+              <div class="mock-file-item">
+                <div class="mock-file-icon">PDF</div>
+                <div>
+                  <div class="mock-file-name">CV_Développeur_Senior.pdf</div>
+                </div>
+                <div class="mock-file-date">il y a 2j</div>
+              </div>
+              <div class="mock-file-item">
+                <div class="mock-file-icon">PDF</div>
+                <div>
+                  <div class="mock-file-name">CV_Chef_Projet_Tech.pdf</div>
+                </div>
+                <div class="mock-file-date">il y a 5j</div>
+              </div>
+              <div class="mock-file-item">
+                <div class="mock-file-icon" style="background: var(--success);">DOC</div>
+                <div>
+                  <div class="mock-file-name">CV_Généraliste.docx</div>
+                </div>
+                <div class="mock-file-date">il y a 1 sem.</div>
+              </div>
+            </div>
+
+            <div class="hiw-visual" data-step="2">
+              <div class="mock-header-row">
+                <span class="mock-title">Analyse de l'offre</span>
+                <span class="mock-badge" style="background:rgba(52,211,153,0.1);color:#059669;">Analysée</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">Poste</span>
+                <span class="mock-info-value">Développeur Full-Stack</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">Entreprise</span>
+                <span class="mock-info-value">TechCorp Paris</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">Contrat</span>
+                <span class="mock-info-value">CDI</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">Salaire</span>
+                <span class="mock-info-value">52-60k€</span>
+              </div>
+              <div class="mock-info-row" style="border-bottom:none;">
+                <span class="mock-info-label">Localisation</span>
+                <span class="mock-info-value">Paris · 2j remote</span>
+              </div>
+              <div style="margin-top:16px;">
+                <span class="mock-title" style="font-size:0.78rem;display:block;margin-bottom:10px;">Compétences requises</span>
+                <span class="mock-skill-tag mock-skill-high">React</span>
+                <span class="mock-skill-tag mock-skill-high">Node.js</span>
+                <span class="mock-skill-tag mock-skill-high">TypeScript</span>
+                <span class="mock-skill-tag mock-skill-med">PostgreSQL</span>
+                <span class="mock-skill-tag mock-skill-med">Docker</span>
+                <span class="mock-skill-tag mock-skill-low">AWS</span>
+                <span class="mock-skill-tag mock-skill-low">CI/CD</span>
+              </div>
+            </div>
+
+            <div class="hiw-visual" data-step="3">
+              <div class="mock-header-row">
+                <span class="mock-title">Verdict de compatibilité</span>
+              </div>
+              <div class="mock-verdict-scale">
+                <div class="mock-verdict-item">
+                  <div class="mock-verdict-dot"></div>
+                  <span class="mock-verdict-label">Vous êtes le candidat parfait</span>
+                </div>
+                <div class="mock-verdict-item active">
+                  <div class="mock-verdict-dot"></div>
+                  <span class="mock-verdict-label">Vous devriez postuler</span>
+                </div>
+                <div class="mock-verdict-item">
+                  <div class="mock-verdict-dot"></div>
+                  <span class="mock-verdict-label">Ça ne coûte rien d'essayer</span>
+                </div>
+                <div class="mock-verdict-item">
+                  <div class="mock-verdict-dot"></div>
+                  <span class="mock-verdict-label">Ce n'est probablement pas pour vous</span>
+                </div>
+              </div>
+              <div style="padding:14px;background:rgba(52,211,153,0.06);border-radius:10px;border:1px solid rgba(52,211,153,0.15);margin-top:8px;">
+                <span style="font-size:0.78rem;font-weight:600;color:#059669;display:block;margin-bottom:6px;">Pourquoi ?</span>
+                <span style="font-size:0.8rem;color:var(--ink-60);line-height:1.6;">Vos 4 ans d'expérience React/Node correspondent au profil recherché. Le salaire est dans votre fourchette. Seule zone grise : l'expérience AWS souhaitée.</span>
+              </div>
+            </div>
+
+            <div class="hiw-visual" data-step="4">
+              <div class="mock-header-row">
+                <span class="mock-title">Documents générés</span>
+                <span class="mock-badge" style="background:linear-gradient(135deg,var(--accent),var(--accent-end));color:#fff;">Premium</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:16px;">
+                <button style="padding:6px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;background:var(--ink);color:var(--paper);border:none;">CV ciblé</button>
+                <button style="padding:6px 14px;border-radius:8px;font-size:0.78rem;font-weight:500;background:var(--paper);color:var(--ink-60);border:1px solid var(--border);">Lettre de motivation</button>
+              </div>
+              <div class="mock-doc-preview">
+                <div class="mock-doc-line heading"></div>
+                <div class="mock-doc-section-label">Expérience professionnelle</div>
+                <div class="mock-doc-line long"></div>
+                <div class="mock-doc-line medium"></div>
+                <div class="mock-doc-line short"></div>
+                <div class="mock-doc-section-label">Compétences techniques</div>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;">
+                  <span class="mock-skill-tag mock-skill-high" style="font-size:0.65rem;">React</span>
+                  <span class="mock-skill-tag mock-skill-high" style="font-size:0.65rem;">Node.js</span>
+                  <span class="mock-skill-tag mock-skill-high" style="font-size:0.65rem;">TypeScript</span>
+                  <span class="mock-skill-tag mock-skill-med" style="font-size:0.65rem;">PostgreSQL</span>
+                </div>
+                <div class="mock-doc-section-label">Formation</div>
+                <div class="mock-doc-line medium"></div>
+                <div class="mock-doc-line short"></div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FEATURES ═══════════════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header reveal">
+        <span class="section-label">Fonctionnalités</span>
+        <h2>Tout ce qu'il vous faut. Rien de superflu.</h2>
+        <p>Un plan gratuit généreux pour démarrer. Le Premium pour passer à la vitesse supérieure.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">&#128203;</div>
+          <h3>Tracker de candidatures</h3>
+          <p>Suivez chaque candidature : entreprise, poste, statut, CV envoyé, contact, dates et notes libres.</p>
+          <span class="feature-limit">Gratuit · Illimité</span>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">&#128270;</div>
+          <h3>Analyse d'offre intelligente</h3>
+          <p>Collez un lien ou une description. L'IA extrait les infos clés et identifie les points d'attention.</p>
+          <span class="feature-limit">Gratuit · 3/mois</span>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">&#127919;</div>
+          <h3>Matching &amp; Verdict</h3>
+          <p>Un verdict de compatibilité humain, pas un score froid. Quatre niveaux clairs pour chaque offre.</p>
+          <span class="feature-limit">Gratuit · 3/mois</span>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">&#128200;</div>
+          <h3>Tableau de bord</h3>
+          <p>Nombre de candidatures, taux de réponse, conversion en entretien, canaux efficaces et objectifs.</p>
+          <span class="feature-limit">Gratuit · Illimité</span>
+        </div>
+        <div class="feature-card premium reveal">
+          <span class="premium-badge">Premium</span>
+          <div class="feature-icon">&#128221;</div>
+          <h3>CV Maître</h3>
+          <p>Un réservoir central de toutes vos expériences. Deklio génère des CV ciblés pour chaque offre.</p>
+        </div>
+        <div class="feature-card premium reveal reveal-delay-1">
+          <span class="premium-badge">Premium</span>
+          <div class="feature-icon">&#9993;&#65039;</div>
+          <h3>Lettres de motivation</h3>
+          <p>Générées automatiquement selon les conventions françaises : Vous/Moi/Nous et formules de politesse.</p>
+        </div>
+        <div class="feature-card premium reveal reveal-delay-2">
+          <span class="premium-badge">Premium</span>
+          <div class="feature-icon">&#127897;&#65039;</div>
+          <h3>Fiches entretien</h3>
+          <p>Questions probables, points clés de l'entreprise, expériences à valoriser et questions à poser.</p>
+        </div>
+        <div class="feature-card premium reveal reveal-delay-3">
+          <span class="premium-badge">Premium</span>
+          <div class="feature-icon">&#128101;</div>
+          <h3>Mini-CRM Réseau</h3>
+          <p>Carnet d'adresses lié aux candidatures. Qui connaissez-vous chez cette entreprise ?</p>
+        </div>
+        <div class="feature-card premium reveal reveal-delay-4">
+          <span class="premium-badge">Premium</span>
+          <div class="feature-icon">&#128276;</div>
+          <h3>Rappels de relance</h3>
+          <p>Notifications après un délai sans réponse, avec templates adaptés : relance, remerciement, suivi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ USE CASES ═══════════════════ -->
+  <section class="usecases" id="use-cases">
+    <div class="container">
+      <div class="usecases-header reveal">
+        <span class="section-label">Cas d'usage</span>
+        <h2>Deklio s'adapte à votre situation.</h2>
+      </div>
+      <div class="usecases-tabs reveal">
+        <button class="uc-tab active" data-target="diplome">Jeune diplômé</button>
+        <button class="uc-tab" data-target="reconversion">Cadre en reconversion</button>
+        <button class="uc-tab" data-target="tech">Profil tech</button>
+        <button class="uc-tab" data-target="veille">Salarié en veille</button>
+      </div>
+      <div class="uc-panels">
+        <!-- Jeune diplômé -->
+        <div class="uc-panel active" data-usecase="diplome">
+          <div class="uc-panel-inner">
+            <div class="uc-text">
+              <h3>Vous sortez d'école et postulez partout ?</h3>
+              <p>Deklio structure votre recherche dès le départ. Plus besoin de deviner si votre profil correspond — vous le saurez avant de postuler.</p>
+              <div class="uc-features">
+                <div class="uc-feature">Organisez des dizaines de candidatures sans perdre le fil</div>
+                <div class="uc-feature">Générez un CV adapté à chaque offre, pas un document générique</div>
+                <div class="uc-feature">Comprenez ce que les recruteurs attendent vraiment</div>
+              </div>
+            </div>
+            <div class="uc-visual">
+              <div class="uc-scenario-label">Scénario type</div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(79,110,247,0.08);">&#127891;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Lundi — Import en masse</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">12 offres repérées sur LinkedIn et WTTJ</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(52,211,153,0.08);">&#128270;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Mardi — Tri intelligent</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">3 offres « vous devriez postuler », 5 à explorer</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(124,92,252,0.08);">&#128640;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Mercredi — Candidatures ciblées</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">CV et lettre personnalisés en quelques clics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cadre en reconversion -->
+        <div class="uc-panel" data-usecase="reconversion">
+          <div class="uc-panel-inner">
+            <div class="uc-text">
+              <h3>Vous changez de voie ?</h3>
+              <p>Deklio valorise vos compétences transférables et vous aide à pitcher votre reconversion avec confiance. L'IA comprend que 10 ans de management, c'est aussi du leadership.</p>
+              <div class="uc-features">
+                <div class="uc-feature">Identifiez les compétences transférables que vous sous-estimez</div>
+                <div class="uc-feature">Des lettres de motivation qui expliquent votre parcours</div>
+                <div class="uc-feature">Des fiches entretien qui anticipent la question « pourquoi ce changement ? »</div>
+              </div>
+            </div>
+            <div class="uc-visual">
+              <div class="uc-scenario-label">Compétences transférables détectées</div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(79,110,247,0.08);">&#128161;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Gestion de projet</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">8 ans d'expérience directement applicable</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(52,211,153,0.08);">&#129309;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Leadership d'équipe</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">Management de 12 personnes → coordinateur</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(124,92,252,0.08);">&#128202;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Analyse de données</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">Reporting financier → data analysis</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profil tech -->
+        <div class="uc-panel" data-usecase="tech">
+          <div class="uc-panel-inner">
+            <div class="uc-text">
+              <h3>Vous jonglez entre les offres ?</h3>
+              <p>Quand on a le profil que tout le monde cherche, le vrai défi c'est de prioriser. Deklio classe, compare et vous aide à choisir les meilleures opportunités.</p>
+              <div class="uc-features">
+                <div class="uc-feature">Comparez les offres sur les critères qui comptent pour vous</div>
+                <div class="uc-feature">Détectez les signaux de vigilance (offre republiée, avis Glassdoor)</div>
+                <div class="uc-feature">Gérez vos contacts recruteurs sans perdre le fil</div>
+              </div>
+            </div>
+            <div class="uc-visual">
+              <div class="uc-scenario-label">Votre pipeline tech</div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(52,211,153,0.08);">&#9989;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">StartupAI — Senior Dev</div>
+                  <div style="font-size:0.78rem;color:#059669;">Candidat parfait · 65k€ · Full remote</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(79,110,247,0.08);">&#128200;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">BigCorp — Lead Dev</div>
+                  <div style="font-size:0.78rem;color:var(--accent);">Vous devriez postuler · 70k€ · Hybride</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(245,158,11,0.08);">&#9888;&#65039;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">AgencyX — Full-Stack</div>
+                  <div style="font-size:0.78rem;color:#d97706;">Offre republiée 3 fois · Avis mitigés</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salarié en veille -->
+        <div class="uc-panel" data-usecase="veille">
+          <div class="uc-panel-inner">
+            <div class="uc-text">
+              <h3>Vous regardez discrètement ?</h3>
+              <p>Pas besoin de tout plaquer pour commencer à explorer. Deklio organise votre veille en toute sérénité, à votre rythme.</p>
+              <div class="uc-features">
+                <div class="uc-feature">Sauvegardez des offres intéressantes sans urgence</div>
+                <div class="uc-feature">Analysez le marché pour savoir si c'est le bon moment</div>
+                <div class="uc-feature">Préparez vos documents à l'avance, sans pression</div>
+              </div>
+            </div>
+            <div class="uc-visual">
+              <div class="uc-scenario-label">Votre veille sereine</div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(79,110,247,0.08);">&#128278;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">3 offres sauvegardées cette semaine</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">LinkedIn (2) · WTTJ (1)</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(52,211,153,0.08);">&#128201;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Tendance marché : favorable</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">+15% d'offres dans votre domaine vs. Q3</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(124,92,252,0.08);">&#128197;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">CV Maître à jour</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">Prêt à générer un CV ciblé en 2 clics</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ DARK QUOTE ═══════════════════ -->
+  <section class="dark-quote">
+    <div class="container">
+      <div class="dark-quote-inner reveal">
+        <h2>Vous êtes à un <span class="declic-glow">déclic</span> de reprendre le contrôle.</h2>
+        <p>Arrêtez de subir votre recherche. Commencez à la piloter.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FAQ ═══════════════════ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-header reveal">
+        <span class="section-label">Questions fréquentes</span>
+        <h2>On répond à tout.</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>Deklio remplace-t-il les sites d'emploi ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Non. Deklio ne publie pas d'offres et n'est pas un job board. C'est votre tableau de bord personnel qui vous aide à exploiter efficacement les offres trouvées sur France Travail, LinkedIn, Indeed, WTTJ, Apec et toutes les autres plateformes.</p>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question">
+            <span>L'IA va-t-elle postuler à ma place ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Non. Deklio vous aide à analyser, préparer et organiser, mais c'est vous qui décidez et qui postulez. L'IA est un moyen, pas un pilote automatique. Vous gardez le contrôle à chaque étape.</p>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-delay-2">
+          <button class="faq-question">
+            <span>Mes données sont-elles en sécurité ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Absolument. Vos données sont hébergées en Europe, chiffrées en transit et au repos. Nous ne revendons rien. Votre recherche d'emploi reste confidentielle — c'est un engagement fondamental.</p>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-delay-3">
+          <button class="faq-question">
+            <span>Pourquoi un outil spécifique à la France ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Les conventions de candidature en France sont uniques : CV antichronologique, importance du diplôme, lettre de motivation structurée en Vous/Moi/Nous, formules de politesse, écosystème France Travail/Apec. Les outils US ne couvrent rien de tout ça.</p>
+          </div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-question">
+            <span>C'est quoi le plan gratuit ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Le plan gratuit inclut le tracker de candidatures illimité, le tableau de bord avec analytics, et 3 analyses d'offres avec verdict de compatibilité par mois. De quoi démarrer sérieusement sans sortir la carte bleue.</p>
+          </div>
+        </div>
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question">
+            <span>Quand est-ce que Deklio sera disponible ?</span>
+            <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Deklio est actuellement en phase de pré-validation. Inscrivez-vous sur la liste d'attente pour être parmi les premiers à tester la bêta. Les premiers inscrits bénéficieront d'une réduction à vie sur l'abonnement Premium.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ EARLY ACCESS CTA ═══════════════════ -->
+  <section class="early-access" id="early-access">
+    <div class="container">
+      <div class="ea-inner reveal">
+        <div class="ea-badge">&#9889; Offre de lancement</div>
+        <h2>Accès anticipé &amp; réduction à vie</h2>
+        <p>Rejoignez notre liste d'attente et soyez parmi les premiers à tester Deklio. Les premiers inscrits bénéficieront d'une réduction permanente sur l'abonnement Premium — c'est notre façon de remercier ceux qui nous font confiance dès le départ.</p>
+        <form class="ea-form" onsubmit="handleForm(event, this)">
+          <input type="email" placeholder="votre@email.com" required>
+          <button type="submit" class="btn-primary">Rejoindre la liste d'attente</button>
+        </form>
+        <div class="form-success">
+          <span>&#10003;</span> Vous êtes sur la liste. Le déclic approche.
+        </div>
+        <p class="ea-trust">Pas de spam. Pas d'engagement. Juste le <em>déclic</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#" class="footer-logo">De<span>k</span>lio</a>
+        <ul class="footer-links">
+          <li><a href="#how-it-works">Comment ça marche</a></li>
+          <li><a href="#features">Fonctionnalités</a></li>
+          <li><a href="#use-cases">Cas d'usage</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <p class="footer-love">Fait avec soin pour les chercheurs d'emploi en France &middot; &copy; 2025 Deklio</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+  <script>
+    /* ── Scroll Reveal ── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── Nav Scroll Effect ── */
+    const nav = document.querySelector('nav');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = window.scrollY;
+    }, { passive: true });
+
+    /* ── Smooth Scroll for Anchor Links ── */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    /* ── How It Works — Tab Switch + Autoplay ── */
+    const hiwBtns = document.querySelectorAll('.hiw-step-btn');
+    const hiwPanelVisuals = document.querySelectorAll('.hiw-visual-panel .hiw-visual');
+    let hiwStep = 1;
+    let hiwInView = false;
+
+    function activateHiwStep(step) {
+      hiwStep = step;
+      hiwBtns.forEach(b => b.classList.remove('active'));
+      hiwPanelVisuals.forEach(v => v.classList.remove('active'));
+      const btn = document.querySelector(`.hiw-step-btn[data-step="${step}"]`);
+      const vis = document.querySelector(`.hiw-visual-panel .hiw-visual[data-step="${step}"]`);
+      if (btn) btn.classList.add('active');
+      if (vis) vis.classList.add('active');
+      if (hiwInView) launchGauge(btn);
+    }
+
+    function launchGauge(activeBtn) {
+      // Réinitialise toutes les jauges (force le reflow pour relancer l'animation)
+      document.querySelectorAll('.step-indicator').forEach(ind => {
+        ind.classList.remove('running');
+        void ind.offsetWidth;
+      });
+      if (activeBtn) {
+        const ind = activeBtn.querySelector('.step-indicator');
+        if (ind) ind.classList.add('running');
+      }
+    }
+
+    // Quand la jauge atteint 100%, passe au step suivant
+    document.querySelectorAll('.step-indicator').forEach(ind => {
+      ind.addEventListener('animationend', () => {
+        activateHiwStep(hiwStep === 4 ? 1 : hiwStep + 1);
+      });
+    });
+
+    // Clic manuel — relance la jauge depuis ce step
+    hiwBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activateHiwStep(parseInt(btn.dataset.step));
+      });
+    });
+
+    // Démarre l'autoplay dès que la section entre dans le viewport
+    const hiwWrap = document.querySelector('.hiw-steps-wrap');
+    if (hiwWrap) {
+      new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          hiwInView = entry.isIntersecting;
+          if (hiwInView) {
+            launchGauge(document.querySelector('.hiw-step-btn.active'));
+          } else {
+            // Suspend quand hors écran
+            document.querySelectorAll('.step-indicator').forEach(ind => {
+              ind.classList.remove('running');
+              void ind.offsetWidth;
+            });
+          }
+        });
+      }, { threshold: 0.3 }).observe(hiwWrap);
+    }
+
+    /* ── Use Cases Tabs ── */
+    const ucTabs = document.querySelectorAll('.uc-tab');
+    const ucPanels = document.querySelectorAll('.uc-panel');
+
+    ucTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.target;
+
+        ucTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        ucPanels.forEach(panel => {
+          if (panel.dataset.usecase === target) {
+            panel.classList.add('active');
+          } else {
+            panel.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    /* ── FAQ Accordion ── */
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+
+        // Open clicked (if it wasn't open)
+        if (!isOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    /* ── Form Handling ── */
+    function handleForm(e, form) {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]').value;
+      if (email) {
+        form.style.display = 'none';
+        const successEl = form.nextElementSibling;
+        if (successEl && successEl.classList.contains('form-success')) {
+          successEl.classList.add('show');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
