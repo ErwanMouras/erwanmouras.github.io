@@ -2159,13 +2159,19 @@
     function handleForm(e, form) {
       e.preventDefault();
       const email = form.querySelector('input[type="email"]').value;
-      if (email) {
+      if (!email) return;
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      }).then(() => {
         form.style.display = 'none';
         const successEl = form.nextElementSibling;
         if (successEl && successEl.classList.contains('form-success')) {
           successEl.classList.add('show');
         }
-      }
+      });
     }
   </script>
 </body>
