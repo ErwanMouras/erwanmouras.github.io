@@ -92,6 +92,12 @@ Format strict : `[Type] Zone — Description courte`
 | C) Fix | `[Fix]` | `bug` |
 | D) Suppression | `[Suppression]` | `chore` |
 
+> **Prérequis :** Les labels `improvement` et `chore` doivent exister sur le repo. S'ils n'existent pas, les créer :
+> ```bash
+> gh label create improvement --description "Amélioration d'un élément existant" --color "0075ca" --repo ErwanMouras/erwanmouras.github.io
+> gh label create chore --description "Tâche de maintenance" --color "e4e669" --repo ErwanMouras/erwanmouras.github.io
+> ```
+
 Exemples :
 - `[Ajout] Hero — Ajouter une section témoignages`
 - `[Modif] Nav — Changer la couleur du CTA en mobile`
@@ -170,6 +176,8 @@ git push -u origin <branche>
 
 ## Étape 5 — Implémenter dans index.html
 
+Lis d'abord `index.html` en entier pour comprendre la structure existante avant d'implémenter. Ce fichier fait ~2700 lignes et contient tout le HTML, CSS et JS de la landing page.
+
 Implémente le changement demandé directement dans `index.html`.
 
 Règles absolues :
@@ -190,7 +198,7 @@ git push
 
 gh pr create \
   --title "<même titre que l'issue>" \
-  --body "Closes #<numéro>\n\n## Changements effectués\n<description des modifications>\n\n## Viewports testés\n[liste]" \
+  --body $'Closes #<numéro>\n\n## Changements effectués\n<description des modifications>\n\n## Viewports testés\n[liste]' \
   --repo ErwanMouras/erwanmouras.github.io
 ```
 
