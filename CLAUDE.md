@@ -60,6 +60,43 @@ Défini dans les CSS variables de `index.html` :
 
 Voir [Deklio.md](Deklio.md) pour le brief complet : problème, positionnement, fonctionnalités, cible, modèle économique, personnalité de marque.
 
+## Workflow de développement
+
+### Dev local
+```bash
+vercel dev    # http://localhost:3000 — API + landing page
+```
+
+### Branches (nommage obligatoire)
+```bash
+git checkout -b feature/<slug>   # nouvelle section, refonte visuelle
+git checkout -b fix/<slug>        # correction d'un élément existant
+# JAMAIS de push direct sur main
+```
+
+### Créer une PR
+```bash
+gh pr create --title "<titre>" --body "<description>"
+```
+
+### Avant de merger — 3 validations automatiques requises
+Trois GitHub Actions se déclenchent en parallèle sur chaque PR :
+
+| Signal | Condition |
+|--------|-----------|
+| ✅ Tests fonctionnels NRT | Tous les scénarios passent sur 5 viewports |
+| ✅ Régression visuelle | Diff < 0.5% sur les zones non modifiées |
+| ✅ Code review IA | Aucun problème bloquant (Sonnet 4.6) |
+
+Merger uniquement si les 3 commentaires sont ✅.
+Si ⚠️ ou ❌ : analyser et corriger avant de merger.
+
+### Secrets GitHub requis
+- `VERCEL_TOKEN` — ⚠️ À CONFIGURER → https://vercel.com/account/tokens → Settings > Secrets > Actions
+- `ANTHROPIC_API_KEY` — ⚠️ À CONFIGURER → https://console.anthropic.com/ → Settings > Secrets > Actions
+
+---
+
 ## Commande /modification
 
 Déclenche le workflow complet de modification :
