@@ -1,0 +1,16 @@
+{
+  "name": "deklio-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:functional": "playwright test tests/functional/",
+    "test:visual:screenshot": "node scripts/screenshot.mjs",
+    "test:visual:compare": "node scripts/compare.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0"
+  }
+}
