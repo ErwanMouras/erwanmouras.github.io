@@ -1,0 +1,102 @@
+# .github/workflows/visual-regression.yml
+name: Régression visuelle
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Installer Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Attendre le déploiement Vercel preview
+        id: vercel-url
+        run: |
+          for i in $(seq 1 30); do
+            url=$(node scripts/get-vercel-url.mjs 2>/dev/null)
+            if [ $? -eq 0 ] && [ -n "$url" ]; then
+              echo "url=$url" >> $GITHUB_OUTPUT
+              echo "Preview disponible : $url"
+              exit 0
+            fi
+            echo "Tentative $i/30 — preview pas encore prête, attente 10s..."
+            sleep 10
+          done
+          echo "Preview Vercel non disponible après 5 minutes"
+          exit 1
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Screenshots prod (baseline)
+        run: node tests/visual/screenshot.mjs https://deklio.fr screenshots/prod
+
+      - name: Screenshots preview
+        env:
+          PREVIEW_URL: ${{ steps.vercel-url.outputs.url }}
+        run: node tests/visual/screenshot.mjs "$PREVIEW_URL" screenshots/preview
+
+      - name: Comparer prod vs preview
+        id: compare
+        run: node tests/visual/compare.mjs screenshots/prod screenshots/preview screenshots/diff
+        continue-on-error: true
+
+      - name: Upload artifacts (screenshots + diffs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff-pr-${{ github.event.number }}
+          path: screenshots/
+          retention-days: 7
+
+      - name: Lire le summary de régression visuelle
+        id: summary
+        run: |
+          echo "json=$(cat screenshots/diff/summary.json | tr -d '\n')" >> $GITHUB_OUTPUT
+
+      - name: Poster le commentaire
+        uses: actions/github-script@v7
+        env:
+          SUMMARY_JSON: ${{ steps.summary.outputs.json }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+        with:
+          script: |
+            const summary = JSON.parse(process.env.SUMMARY_JSON);
+            const runUrl = `https://github.com/${process.env.REPO}/actions/runs/${process.env.RUN_ID}`;
+
+            let body;
+            if (!summary.hasRegression) {
+              const lines = summary.results.map(r => `- ✅ **${r.viewport}** : ${r.diffPercent}%`).join('\n');
+              body = `## ✅ Régression visuelle — Aucune régression (5 viewports)\n\n${lines}`;
+            } else {
+              const lines = summary.results.map(r => {
+                const icon = r.exceeded ? '⚠️' : '✅';
+                return `- ${icon} **${r.viewport}** : ${r.diffPercent}%`;
+              }).join('\n');
+              body = `## ⚠️ Régression visuelle — Différences détectées\n\n${lines}\n\n[Télécharger les images de diff](${runUrl}) *(artifacts disponibles 7 jours)*`;
+            }
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });
+
+      - name: Échouer si régression détectée
+        if: steps.compare.outcome == 'failure'
+        run: exit 1
