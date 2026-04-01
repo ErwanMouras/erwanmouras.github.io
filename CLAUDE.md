@@ -37,6 +37,18 @@ Défini dans les CSS variables de `index.html` :
 - **Typographie** : serif Cormorant Garamond pour les titres, Manrope sans-serif pour le corps
 - **Ton visuel** : premium, épuré, professionnel mais chaleureux — pas startup tech générique
 
+## Périmètre d'écriture
+
+**Règles absolues pour tous les agents :**
+- Ne jamais créer ou modifier de fichiers en dehors de `/home/erwan/Deklio/`
+- Ne jamais pusher vers un remote autre que `https://github.com/ErwanMouras/erwanmouras.github.io`
+
+## Périmètre d'écriture
+
+**Règles absolues pour tous les agents :**
+- Ne jamais créer ou modifier de fichiers en dehors de `/home/erwan/Deklio/`
+- Ne jamais pusher vers un remote autre que `https://github.com/ErwanMouras/erwanmouras.github.io`
+
 ## Contraintes éditoriales
 
 - Vouvoiement systématique sur tous les textes publics

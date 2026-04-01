@@ -1,0 +1,5 @@
+.vercel
+.env*.local
+
+# Claude Code — configuration locale (ne pas committer)
+.claude/settings.local.json
