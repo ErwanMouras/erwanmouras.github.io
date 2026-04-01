@@ -1346,6 +1346,380 @@
       animation: fadeInUp 0.4s var(--ease-out) both;
     }
     .form-success.show { display: flex; }
+
+    /* ═══════════════════════════════════════
+       PRICING
+    ═══════════════════════════════════════ */
+
+    #pricing {
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+      padding: 120px 0 140px;
+    }
+
+    #pricing .pricing-head {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    #pricing .pricing-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    #pricing .pricing-sub {
+      font-size: 15px;
+      color: var(--ink-60);
+      line-height: 1.6;
+    }
+
+    /* ── Toggle facturation ── */
+    #pricing .billing-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 56px;
+    }
+
+    #pricing .billing-pills {
+      display: inline-flex;
+      background: var(--paper-warm);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 2px;
+    }
+
+    #pricing .billing-btn {
+      padding: 9px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      color: var(--ink-40);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.22s var(--ease-out);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.01em;
+    }
+
+    #pricing .billing-btn.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    #pricing .billing-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Cards ── */
+    #pricing .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    #pricing .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    }
+
+    #pricing .pricing-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    #pricing .pricing-card.card-featured {
+      background: var(--ink);
+      border-color: var(--ink);
+      box-shadow: var(--shadow-lg);
+    }
+
+    #pricing .pricing-card.card-featured:hover {
+      box-shadow: 0 20px 60px rgba(12,12,29,0.22);
+      transform: translateY(-5px);
+    }
+
+    /* Badge */
+    #pricing .pc-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    /* Plan name */
+    #pricing .pc-name {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-40);
+      margin-bottom: 8px;
+    }
+
+    #pricing .card-featured .pc-name {
+      color: rgba(255,255,255,0.45);
+    }
+
+    #pricing .pc-desc {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-60);
+      margin-bottom: 28px;
+    }
+
+    #pricing .card-featured .pc-desc {
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Prix */
+    #pricing .pc-price {
+      display: flex;
+      align-items: flex-start;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    #pricing .pc-amount {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 68px);
+      font-weight: 600;
+      line-height: 0.9;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    }
+
+    #pricing .card-featured .pc-amount {
+      color: #fff;
+    }
+
+    #pricing .pc-currency {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink-40);
+      margin-top: 8px;
+    }
+
+    #pricing .card-featured .pc-currency {
+      color: rgba(255,255,255,0.45);
+    }
+
+    #pricing .pc-period {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--ink-40);
+      align-self: flex-end;
+      padding-bottom: 8px;
+    }
+
+    #pricing .card-featured .pc-period {
+      color: rgba(255,255,255,0.4);
+    }
+
+    #pricing .pc-billing-note {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--success);
+      min-height: 16px;
+      margin-bottom: 28px;
+      transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    }
+
+    /* Divider */
+    #pricing .pc-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    #pricing .card-featured .pc-divider {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Features */
+    #pricing .pc-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      flex: 1;
+    }
+
+    #pricing .pc-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--ink-80);
+      line-height: 1.4;
+    }
+
+    #pricing .card-featured .pc-features li {
+      color: rgba(255,255,255,0.8);
+    }
+
+    #pricing .pc-features li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      border-radius: 50%;
+      background-color: rgba(52,211,153,0.12);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 5l2.5 2.5L8 3' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #pricing .card-featured .pc-features li::before {
+      background-color: rgba(52,211,153,0.15);
+    }
+
+    /* Buttons */
+    #pricing .pc-btn {
+      display: block;
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s var(--ease-out);
+      letter-spacing: 0.01em;
+    }
+
+    #pricing .pc-btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink-80);
+    }
+
+    #pricing .pc-btn-outline:hover {
+      background: var(--paper-warm);
+      border-color: rgba(12,12,29,0.14);
+      color: var(--ink);
+    }
+
+    #pricing .pc-btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-end));
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(79,110,247,0.3);
+    }
+
+    #pricing .pc-btn-primary:hover {
+      box-shadow: 0 8px 28px rgba(79,110,247,0.45);
+      transform: translateY(-1px);
+    }
+
+    #pricing .pricing-launch-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 40px;
+      padding: 12px 20px;
+      background: rgba(79,110,247,0.05);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--ink-60);
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    #pricing .pricing-launch-note svg {
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    #pricing .pricing-launch-note a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    #pricing .pricing-launch-note a:hover {
+      color: var(--accent-dark);
+    }
+
+    #pricing .pricing-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--ink-40);
+      letter-spacing: 0.01em;
+    }
+
+    /* Toggle animation */
+    #pricing .pc-amount.is-switching,
+    #pricing .pc-billing-note.is-switching {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    @media (max-width: 900px) {
+      #pricing .pricing-cards {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+        margin: 0 auto;
+      }
+
+      #pricing .card-featured {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #pricing {
+        padding: 80px 0 100px;
+      }
+
+      #pricing .billing-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1394,7 +1768,7 @@
           <div class="form-success">
             <span>&#10003;</span> Vous êtes sur la liste. Le déclic approche.
           </div>
-          <p class="hero-proof">Rejoignez les premiers à tester Deklio — <strong>places limitées</strong></p>
+          <p class="hero-proof"><strong>142 personnes</strong> déjà inscrites — rejoignez la liste d'attente</p>
         </div>
         <div class="hero-visual">
           <div class="mockup-card">
@@ -1507,7 +1881,7 @@
     <div class="container">
       <div class="hiw-header reveal">
         <span class="section-label">Comment ça marche</span>
-        <h2>Du chaos à la maîtrise, en 4 étapes.</h2>
+        <h2>Du chaos à la maîtrise, en 5 étapes.</h2>
         <p>Deklio transforme votre recherche en une démarche structurée et efficace.</p>
       </div>
       <div class="hiw-steps-wrap reveal">
@@ -1535,6 +1909,12 @@
           <span class="hiw-step-num">04</span>
           <span class="hiw-step-title">Générez vos documents</span>
           <span class="hiw-step-desc">CV ciblé et lettre à la française en quelques secondes.</span>
+          <span class="step-indicator"></span>
+        </button>
+        <button class="hiw-step-btn" data-step="5">
+          <span class="hiw-step-num">05</span>
+          <span class="hiw-step-title">Suivez votre candidature</span>
+          <span class="hiw-step-desc">Statuts, rappels, notes — ne laissez plus rien passer.</span>
           <span class="step-indicator"></span>
         </button>
       </div>
@@ -1662,6 +2042,33 @@
                 <div class="mock-doc-section-label">Formation</div>
                 <div class="mock-doc-line medium"></div>
                 <div class="mock-doc-line short"></div>
+              </div>
+            </div>
+
+            <div class="hiw-visual" data-step="5">
+              <div class="mock-header-row">
+                <span class="mock-title">Suivi des candidatures</span>
+                <span class="mock-badge" style="background:rgba(79,110,247,0.1);color:var(--accent);">4 actives</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">TechCorp Paris</span>
+                <span class="mock-badge" style="background:rgba(52,211,153,0.1);color:#059669;font-size:0.7rem;">Entretien</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">Startup Lyon</span>
+                <span class="mock-badge" style="background:rgba(79,110,247,0.1);color:var(--accent);font-size:0.7rem;">En attente</span>
+              </div>
+              <div class="mock-info-row">
+                <span class="mock-info-label">AgenceWeb Bordeaux</span>
+                <span class="mock-badge" style="background:rgba(251,191,36,0.12);color:#d97706;font-size:0.7rem;">Relance J+3</span>
+              </div>
+              <div class="mock-info-row" style="border-bottom:none;">
+                <span class="mock-info-label">DataCo Nantes</span>
+                <span class="mock-badge" style="background:rgba(12,12,29,0.06);color:var(--ink-60);font-size:0.7rem;">Envoyée</span>
+              </div>
+              <div style="margin-top:16px;padding:12px 14px;background:rgba(251,191,36,0.07);border-radius:10px;border:1px solid rgba(251,191,36,0.2);">
+                <span style="font-size:0.75rem;font-weight:600;color:#d97706;display:block;margin-bottom:4px;">⏰ Rappel aujourd'hui</span>
+                <span style="font-size:0.78rem;color:var(--ink-60);line-height:1.55;">Relancer Startup Lyon — 7 jours sans réponse.</span>
               </div>
             </div>
         </div>
@@ -1919,6 +2326,110 @@
     </div>
   </section>
 
+  <!-- ═══════════════════ PRICING ═══════════════════ -->
+  <section id="pricing">
+    <div class="container">
+
+      <!-- En-tête -->
+      <div class="pricing-head reveal">
+        <span class="section-label">Tarifs</span>
+        <h2 class="pricing-title">Simple. Transparent.</h2>
+        <p class="pricing-sub">Commencez gratuitement. Passez à Déclic quand vous êtes prêt.</p>
+      </div>
+
+      <!-- Toggle mensuel / trimestriel -->
+      <div class="billing-toggle reveal reveal-delay-1">
+        <div class="billing-pills" role="group" aria-label="Fréquence de facturation">
+          <button class="billing-btn active" id="btn-monthly" aria-pressed="true">Mensuel</button>
+          <button class="billing-btn" id="btn-quarterly" aria-pressed="false">
+            Trimestriel <span class="billing-badge">−22%</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 cartes -->
+      <div class="pricing-cards">
+
+        <!-- Gratuit -->
+        <div class="pricing-card reveal">
+          <div>
+            <span class="pc-name">Gratuit</span>
+            <p class="pc-desc">Pour explorer Deklio et gérer vos premières candidatures.</p>
+          </div>
+          <div class="pc-price">
+            <span class="pc-currency">€</span>
+            <span class="pc-amount">0</span>
+            <span class="pc-period">/mois</span>
+          </div>
+          <p class="pc-billing-note">&nbsp;</p>
+          <div class="pc-divider"></div>
+          <ul class="pc-features">
+            <li>Tableau de bord</li>
+            <li>10 candidatures / mois</li>
+            <li>CV standard exportable</li>
+          </ul>
+          <a href="#early-access" class="pc-btn pc-btn-outline">Rejoindre la liste d'attente</a>
+        </div>
+
+        <!-- Déclic — featured -->
+        <div class="pricing-card card-featured reveal reveal-delay-1">
+          <span class="pc-badge">Recommandé</span>
+          <div>
+            <span class="pc-name">Déclic</span>
+            <p class="pc-desc">L'IA complète pour accélérer et organiser votre recherche.</p>
+          </div>
+          <div class="pc-price">
+            <span class="pc-currency">€</span>
+            <span class="pc-amount" id="pro-price" aria-live="polite" aria-atomic="true">12,90</span>
+            <span class="pc-period">/mois</span>
+          </div>
+          <p class="pc-billing-note" id="pro-note">&nbsp;</p>
+          <div class="pc-divider"></div>
+          <ul class="pc-features">
+            <li>Tout Gratuit, plus</li>
+            <li>Candidatures illimitées</li>
+            <li>Analyse IA des offres</li>
+            <li>Génération de lettres de motivation</li>
+            <li>Suivi avancé</li>
+            <li>Support prioritaire</li>
+          </ul>
+          <a href="#early-access" class="pc-btn pc-btn-primary">Rejoindre la liste d'attente</a>
+        </div>
+
+        <!-- Expert -->
+        <div class="pricing-card reveal reveal-delay-2">
+          <div>
+            <span class="pc-name">Expert</span>
+            <p class="pc-desc">Pour les chercheurs d'emploi les plus exigeants, tout inclus.</p>
+          </div>
+          <div class="pc-price">
+            <span class="pc-currency">€</span>
+            <span class="pc-amount" id="team-price" aria-live="polite" aria-atomic="true">17,90</span>
+            <span class="pc-period">/mois</span>
+          </div>
+          <p class="pc-billing-note" id="team-note">&nbsp;</p>
+          <div class="pc-divider"></div>
+          <ul class="pc-features">
+            <li>Tout Déclic, plus</li>
+            <li>Simulation d'entretien IA</li>
+            <li>Alertes offres personnalisées</li>
+            <li>Statistiques de candidature</li>
+            <li>Accès anticipé aux nouveautés</li>
+          </ul>
+          <a href="#early-access" class="pc-btn pc-btn-outline">Rejoindre la liste d'attente</a>
+        </div>
+
+      </div>
+
+      <div class="pricing-launch-note reveal">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.5L9 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Ces tarifs sont ceux prévus au lancement — l'achat n'est pas encore disponible. <a href="#early-access">Inscrivez-vous</a> pour être notifié à l'ouverture.
+      </div>
+      <p class="pricing-note reveal">Sans engagement · Paiement sécurisé Stripe · Résiliable à tout moment</p>
+
+    </div>
+  </section>
+
   <!-- ═══════════════════ FAQ ═══════════════════ -->
   <section class="faq" id="faq">
     <div class="container">
@@ -1985,7 +2496,6 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ EARLY ACCESS CTA ═══════════════════ -->
   <section class="early-access" id="early-access">
     <div class="container">
       <div class="ea-inner reveal">
@@ -2032,6 +2542,40 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── Pricing Toggle ── */
+    (function() {
+      const btnMonthly   = document.getElementById('btn-monthly');
+      const btnQuarterly = document.getElementById('btn-quarterly');
+      if (!btnMonthly || !btnQuarterly) return;
+
+      const proPrice  = document.getElementById('pro-price');
+      const proNote   = document.getElementById('pro-note');
+      const teamPrice = document.getElementById('team-price');
+      const teamNote  = document.getElementById('team-note');
+      let timer;
+
+      function switchBilling(isQuarterly) {
+        clearTimeout(timer);
+        [proPrice, teamPrice, proNote, teamNote].forEach(el => el.classList.add('is-switching'));
+
+        btnMonthly.classList.toggle('active', !isQuarterly);
+        btnMonthly.setAttribute('aria-pressed', String(!isQuarterly));
+        btnQuarterly.classList.toggle('active', isQuarterly);
+        btnQuarterly.setAttribute('aria-pressed', String(isQuarterly));
+
+        timer = setTimeout(() => {
+          proPrice.textContent  = isQuarterly ? '9,90' : '12,90';
+          teamPrice.textContent = isQuarterly ? '13,90' : '17,90';
+          proNote.textContent   = isQuarterly ? 'Factur\u00e9 29,70\u00a0\u20ac / trimestre' : '\u00a0';
+          teamNote.textContent  = isQuarterly ? 'Factur\u00e9 41,70\u00a0\u20ac / trimestre' : '\u00a0';
+          [proPrice, teamPrice, proNote, teamNote].forEach(el => el.classList.remove('is-switching'));
+        }, 250);
+      }
+
+      btnMonthly.addEventListener('click',   () => switchBilling(false));
+      btnQuarterly.addEventListener('click', () => switchBilling(true));
+    })();
 
     /* ── Nav Scroll Effect ── */
     const nav = document.querySelector('nav');
@@ -2088,7 +2632,7 @@
     // Quand la jauge atteint 100%, passe au step suivant
     document.querySelectorAll('.step-indicator').forEach(ind => {
       ind.addEventListener('animationend', () => {
-        activateHiwStep(hiwStep === 4 ? 1 : hiwStep + 1);
+        activateHiwStep(hiwStep === 5 ? 1 : hiwStep + 1);
       });
     });
 
