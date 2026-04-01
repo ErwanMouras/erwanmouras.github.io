@@ -4,3 +4,10 @@
 # Claude Code — configuration locale (ne pas committer)
 .claude/*
 docs/*
+
+# Tests et CI
+node_modules/
+screenshots/
+pr.diff
+test-results/
+playwright-report/
