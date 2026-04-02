@@ -27,8 +27,8 @@ jobs:
         id: vercel-url
         run: |
           for i in $(seq 1 30); do
-            url=$(node scripts/get-vercel-url.mjs 2>/dev/null)
-            if [ $? -eq 0 ] && [ -n "$url" ]; then
+            url=$(node scripts/get-vercel-url.mjs 2>/dev/null) || true
+            if [ -n "$url" ]; then
               echo "url=$url" >> $GITHUB_OUTPUT
               echo "Preview disponible : $url"
               exit 0
