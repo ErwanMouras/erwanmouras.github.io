@@ -14,6 +14,9 @@
   <meta property="og:title" content="Deklio — Votre recherche d'emploi mérite un déclic">
   <meta property="og:description" content="Deklio centralise vos candidatures, analyse les offres et génère vos documents. Le premier outil de recherche d'emploi pensé pour la France.">
   <meta property="og:image" content="https://deklio.fr/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Deklio">
 
@@ -65,14 +68,79 @@
         "url": "https://deklio.fr",
         "description": "Deklio est le cockpit de la recherche d'emploi en France.",
         "areaServed": "FR"
+      },
+      {
+        "@type": "WebSite",
+        "name": "Deklio",
+        "url": "https://deklio.fr"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Deklio remplace-t-il les sites d'emploi ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Non. Deklio ne publie pas d'offres et n'est pas un job board. C'est votre tableau de bord personnel qui vous aide à exploiter efficacement les offres trouvées sur France Travail, LinkedIn, Indeed, WTTJ, Apec et toutes les autres plateformes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "L'IA va-t-elle postuler à ma place ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Non. Deklio vous aide à analyser, préparer et organiser, mais c'est vous qui décidez et qui postulez. L'IA est un moyen, pas un pilote automatique. Vous gardez le contrôle à chaque étape."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Mes données sont-elles en sécurité ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolument. Vos données sont hébergées en Europe, chiffrées en transit et au repos. Nous ne revendons rien. Votre recherche d'emploi reste confidentielle — c'est un engagement fondamental."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Pourquoi un outil spécifique à la France ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Les conventions de candidature en France sont uniques : CV antichronologique, importance du diplôme, lettre de motivation structurée en Vous/Moi/Nous, formules de politesse, écosystème France Travail/Apec. Les outils US ne couvrent rien de tout ça."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "C'est quoi le plan gratuit ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Le plan gratuit inclut le tracker de candidatures illimité, le tableau de bord avec analytics, et 3 analyses d'offres avec verdict de compatibilité par mois. De quoi démarrer sérieusement sans sortir la carte bleue."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quand est-ce que Deklio sera disponible ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Deklio est actuellement en phase de pré-validation. Inscrivez-vous sur la liste d'attente pour être parmi les premiers à tester la bêta. Les premiers inscrits bénéficieront d'une réduction à vie sur l'abonnement Premium."
+            }
+          }
+        ]
       }
     ]
   }
   </script>
 
+  <meta name="theme-color" content="#0c0c1d">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c0c1d'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia%2C serif' font-size='20' font-weight='700' fill='%234f6ef7'%3ED%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230c0c1d'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Georgia%2C serif' font-size='110' font-weight='700' fill='%234f6ef7'%3ED%3C/text%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
   <style>
     /* ═══════════════════════════════════════
        DESIGN SYSTEM
@@ -529,6 +597,13 @@
       .hero-grid { grid-template-columns: 1fr; gap: 48px; }
       .hero-form { flex-direction: column; }
       .hero-visual { order: -1; }
+      .problem { padding: 64px 0; }
+      .hiw { padding: 64px 0; }
+      .features { padding: 64px 0; }
+      .usecases { padding: 64px 0; }
+      .dark-quote { padding: 90px 0; }
+      .faq { padding: 64px 0; }
+      .early-access { padding: 72px 0; }
     }
 
     /* ═══════════════════════════════════════
@@ -893,7 +968,7 @@
       }
       .hiw-step-btn {
         flex: 0 0 auto;
-        width: 50%;
+        width: min(50%, 200px);
         padding: 18px 20px;
         border-bottom: none;
         border-right: 1px solid var(--border);
@@ -901,8 +976,27 @@
       .hiw-step-btn:last-child { border-right: none; }
       .hiw-step-desc { display: none; }
       .step-indicator { bottom: auto; top: 0; }
-      .hiw-visual-panel { padding: 24px; min-height: 380px; }
-      .hiw-visual { inset: 24px; }
+
+      /* Visual panel : hauteur libre pour que le contenu soit visible en entier */
+      .hiw-visual-panel { padding: 16px; min-height: 0; }
+      .hiw-visual {
+        position: relative;
+        inset: auto;
+        height: 0;
+        overflow: hidden;
+        padding: 0;
+        box-shadow: none;
+        transform: none;
+        opacity: 0;
+      }
+      .hiw-visual.active {
+        height: auto;
+        overflow: visible;
+        padding: 20px;
+        opacity: 1;
+        transform: none;
+        box-shadow: var(--shadow-md), 0 0 0 1px var(--border);
+      }
     }
 
     /* ═══════════════════════════════════════
@@ -1042,6 +1136,7 @@
       border-color: var(--ink);
     }
     .uc-panels { position: relative; min-height: 280px; }
+    @media (max-width: 768px) { .uc-panels { min-height: 0; } }
     .uc-panel {
       opacity: 0;
       transform: translateY(16px);
@@ -1245,7 +1340,7 @@
       opacity: 0;
     }
     .faq-item.open .faq-answer {
-      max-height: 300px;
+      max-height: 600px;
       opacity: 1;
     }
     .faq-answer p {
@@ -1711,6 +1806,14 @@
 
     #pricing .pricing-launch-note svg { flex-shrink: 0; color: var(--accent); }
 
+    @media (max-width: 560px) {
+      #pricing .pricing-launch-note {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+
     #pricing .pricing-launch-note a {
       color: var(--accent);
       font-weight: 600;
@@ -1740,7 +1843,6 @@
         max-width: 440px;
         margin: 0 auto;
       }
-      #pricing .card-featured { order: -1; }
     }
 
     @media (max-width: 480px) {
@@ -1765,7 +1867,7 @@
       <div class="nav-cta-wrap">
         <a href="#early-access" class="nav-cta">Accès anticipé</a>
       </div>
-      <button class="nav-hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-menu').classList.add('open')">
+      <button class="nav-hamburger" aria-label="Menu" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -1777,6 +1879,7 @@
     <a href="#how-it-works" onclick="this.parentElement.classList.remove('open')">Comment ça marche</a>
     <a href="#features" onclick="this.parentElement.classList.remove('open')">Fonctionnalités</a>
     <a href="#use-cases" onclick="this.parentElement.classList.remove('open')">Cas d'usage</a>
+    <a href="#pricing" onclick="this.parentElement.classList.remove('open')">Tarifs</a>
     <a href="#faq" onclick="this.parentElement.classList.remove('open')">FAQ</a>
     <a href="#early-access" onclick="this.parentElement.classList.remove('open')" class="nav-cta" style="margin-top:12px;">Accès anticipé</a>
   </div>
@@ -2183,6 +2286,7 @@
       <div class="usecases-tabs reveal">
         <button class="uc-tab active" data-target="diplome">Jeune diplômé</button>
         <button class="uc-tab" data-target="reconversion">Cadre en reconversion</button>
+        <button class="uc-tab" data-target="actif">En recherche active</button>
         <button class="uc-tab" data-target="tech">Profil tech</button>
         <button class="uc-tab" data-target="veille">Salarié en veille</button>
       </div>
@@ -2259,6 +2363,45 @@
                 <div>
                   <div style="font-weight:600;margin-bottom:2px;">Analyse de données</div>
                   <div style="font-size:0.78rem;color:var(--ink-40);">Reporting financier → data analysis</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- En recherche active -->
+        <div class="uc-panel" data-usecase="actif">
+          <div class="uc-panel-inner">
+            <div class="uc-text">
+              <h3>Vous cherchez depuis plusieurs semaines ?</h3>
+              <p>La vraie difficulté, ce n'est pas de trouver des offres — c'est de tenir la cadence sans se perdre. Deklio suit votre recherche pour vous, semaine après semaine, et vous montre où vous en êtes vraiment.</p>
+              <div class="uc-features">
+                <div class="uc-feature">Visualisez votre pipeline : ce qui avance, ce qui stagne, ce qu'il faut relancer</div>
+                <div class="uc-feature">Recevez un bilan hebdomadaire : candidatures, taux de réponse, tendances</div>
+                <div class="uc-feature">Évitez les doublons et les relances oubliées</div>
+              </div>
+            </div>
+            <div class="uc-visual">
+              <div class="uc-scenario-label">Votre semaine en un coup d'œil</div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(245,158,11,0.08);">&#128276;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Lundi — 3 relances à envoyer</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">Candidatures sans réponse depuis J+14</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(52,211,153,0.08);">&#9989;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Mercredi — Entretien RH confirmé</div>
+                  <div style="font-size:0.78rem;color:#059669;">Contentsquare · 14h00 · Fiche de préparation prête</div>
+                </div>
+              </div>
+              <div class="uc-scenario-item">
+                <div class="uc-scenario-icon" style="background:rgba(79,110,247,0.08);">&#128202;</div>
+                <div>
+                  <div style="font-weight:600;margin-bottom:2px;">Vendredi — Bilan de la semaine</div>
+                  <div style="font-size:0.78rem;color:var(--ink-40);">8 candidatures · 2 retours positifs · +1 vs S-1</div>
                 </div>
               </div>
             </div>
@@ -2361,7 +2504,7 @@
     <div class="container">
       <div class="pricing-head reveal">
         <span class="section-label">Tarifs</span>
-        <h2 class="pricing-title">Simple. Transparent.</h2>
+        <h2 class="pricing-title">Tarifs simples et transparents</h2>
         <p class="pricing-sub">Commencez gratuitement. Passez à Déclic quand vous êtes prêt.</p>
       </div>
       <div class="billing-toggle reveal reveal-delay-1">
@@ -2442,7 +2585,7 @@
       </div>
       <div class="pricing-launch-note reveal">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.5L9 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        Ces tarifs sont ceux prévus au lancement — l'achat n'est pas encore disponible. <a href="#early-access">Inscrivez-vous</a> pour être notifié à l'ouverture.
+        <span>Ces tarifs sont ceux prévus au lancement — l'achat n'est pas encore disponible. <a href="#early-access">Inscrivez-vous</a> pour être notifié à l'ouverture.</span>
       </div>
       <p class="pricing-note reveal">Sans engagement · Paiement sécurisé Stripe · Résiliable à tout moment</p>
     </div>
@@ -2453,7 +2596,7 @@
     <div class="container">
       <div class="faq-header reveal">
         <span class="section-label">Questions fréquentes</span>
-        <h2>On répond à tout.</h2>
+        <h2>Questions fréquentes sur Deklio</h2>
       </div>
       <div class="faq-list">
         <div class="faq-item reveal">
@@ -2545,6 +2688,7 @@
           <li><a href="#how-it-works">Comment ça marche</a></li>
           <li><a href="#features">Fonctionnalités</a></li>
           <li><a href="#use-cases">Cas d'usage</a></li>
+          <li><a href="#pricing">Tarifs</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
