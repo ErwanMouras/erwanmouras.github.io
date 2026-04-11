@@ -2841,12 +2841,18 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
-      }).then(() => {
+      }).then(async (r) => {
+        if (!r.ok) {
+          const data = await r.json().catch(() => ({}));
+          throw new Error(data.error || data.message || 'Inscription impossible');
+        }
         form.style.display = 'none';
         const successEl = form.nextElementSibling;
         if (successEl && successEl.classList.contains('form-success')) {
           successEl.classList.add('show');
         }
+      }).catch((err) => {
+        alert('Erreur : ' + err.message);
       });
     }
 
